@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Background & Foreground */
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    /* Card */
+    --card: 222 47% 14%;
+    --card-foreground: 210 40% 98%;
+
+    /* Popover */
+    --popover: 222 47% 14%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Primary */
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+
+    /* Secondary */
+    --secondary: 217 33% 25%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* Muted */
+    --muted: 217 33% 20%;
+    --muted-foreground: 215 20% 65%;
+
+    /* Accent */
+    --accent: 217 33% 25%;
+    --accent-foreground: 210 40% 98%;
+
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Border & Input */
+    --border: 217 33% 25%;
+    --input: 217 33% 25%;
+    --ring: 217 91% 60%;
+
+    /* Radius */
+    --radius: 0.5rem;
+
+    /* Node Type Colors */
+    --node-data-source: 142 76% 45%;
+    --node-transformer: 262 83% 65%;
+    --node-model: 24 95% 55%;
+    --node-sink: 199 89% 50%;
+
+    /* Status Colors */
+    --status-running: 217 91% 60%;
+    --status-completed: 142 76% 45%;
+    --status-error: 0 84% 60%;
+  }
+
+   
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* React Flow Styles */
+.react-flow__node {
+  cursor: grab;
+}
+
+.react-flow__node:active {
+  cursor: grabbing;
+}
+
+.react-flow__edge-path {
+  stroke: hsl(var(--muted-foreground));
+  stroke-width: 2;
+}
+
+.react-flow__edge.selected .react-flow__edge-path,
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: hsl(var(--primary));
+}
+
+.react-flow__handle {
+  width: 12px;
+  height: 12px;
+  background: hsl(var(--muted));
+  border: 2px solid hsl(var(--border));
+  transition: all 0.2s ease;
+}
+
+.react-flow__handle:hover {
+  background: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  transform: scale(1.2);
+}
+
+.react-flow__handle.connecting {
+  background: hsl(var(--primary));
+}
+
+.react-flow__handle.valid {
+  background: hsl(var(--status-completed));
+}
+
+.react-flow__minimap {
+  background: hsl(var(--card));
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.react-flow__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.react-flow__controls-button {
+  background: hsl(var(--card)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: var(--radius) !important;
+  width: 28px !important;
+  height: 28px !important;
+  padding: 4px !important;
+}
+
+.react-flow__controls-button:hover {
+  background: hsl(var(--secondary)) !important;
+}
+
+.react-flow__controls-button svg {
+  fill: hsl(var(--foreground)) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* Animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 hsl(var(--primary) / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 4px hsl(var(--primary) / 0.6);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out forwards;
+}
+
+/* Node Status Styles */
+.node-running {
+  box-shadow: 0 0 20px 4px hsl(var(--status-running) / 0.4);
+}
+
+.node-completed {
+  box-shadow: 0 0 12px 2px hsl(var(--status-completed) / 0.3);
+}
+
+.node-error {
+  box-shadow: 0 0 12px 2px hsl(var(--status-error) / 0.4);
+}

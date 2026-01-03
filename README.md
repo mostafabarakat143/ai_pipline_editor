@@ -1,73 +1,97 @@
-# React + TypeScript + Vite
+ # AI Pipeline Editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+##  Features
+- Visual pipeline canvas (drag, drop, connect nodes)
+- Node palette (Data Source, Transformer, Model, Sink)
+- Pipeline execution simulation with logs
+- Backend mock API (FastAPI)
+- Fully Dockerized frontend (and backend)
+- Minimal setup using Docker or local tooling
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
+##  Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Frontend
+- React 18
+- TypeScript
+- Vite
+- Zustand (state management)
+- React Flow / XYFlow (graph editor)
+- Tailwind CSS
 
-## Expanding the ESLint configuration
+### Backend
+- FastAPI (Python 3.10)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Infrastructure
+- Docker
+- Docker Compose
+- Nginx (serving production frontend build)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+ 
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Prerequisites
+- **Docker Desktop** (Windows / macOS / Linux)
+- (Optional for local development)  Node.js v20+  and npm 
+- (Optional for backend local run)  Python 3.10+ 
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+ 
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Full Stack (Frontend + Backend)
+```bash
+docker compose up --build
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Then open:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Frontend: http://localhost:3000
+
+Backend API Docs (Swagger): http://localhost:8000/docs
+
+Frontend Only (Production Image)
+    docker build -t ai-pipeline-editor-frontend .
+    docker run -p 3000:80 ai-pipeline-editor-frontend
+Open: http://localhost:3000
+
+Frontend locally
+npm install
+npm run dev
+Open: http://localhost:5173
+
+
+
+## Architecture & State Management
+
+### High-Level Architecture
+- Frontend** renders the visual AI pipeline editor (canvas, node palette, configuration panels, execution logs).
+- Backend** provides node metadata and example endpoints to simulate pipeline execution.
+- Nginx** serves the production frontend build inside Docker.
+
+### Data Flow
+- Frontend fetches available node types from the backend (with a mock fallback).
+- Users visually compose pipelines by adding and connecting nodes.
+- The pipeline graph is stored in a centralized state store.
+- Execution simulates pipeline processing and displays logs/results in the UI.
+
+### State Management (Zustand)
+Zustand manages:
+- Nodes (type, position, configuration)
+- Edges (connections)
+- UI state (selection, validation)
+- Execution state (running status, logs, results)
+
+**Why Zustand?**
+- Lightweight with minimal boilerplate
+- Integrates naturally with React Flow graph state
+- Predictable and easy to reason about for complex UI interactions
+
+ 
+
+## Design Write-Up  
+
+The goal was to build a clear and extensible  AI pipeline editor  that enables users to visually compose and execute processing steps.  
+The design prioritizes modularity, predictable state management, and easy evaluation via Docker.
+
+React Flow was used to handle the node-based UI efficiently, while Zustand provides a simple and scalable state layer.  
+Pipeline execution is implemented as a simulation to demonstrate correct execution order and data flow without introducing unnecessary backend complexity.
+
+ 
